@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import csv
 import math
 
@@ -61,7 +60,7 @@ def is_date_same(date_1, date_2):
 def get_month_recs(mon, recs):
     mon_recs = []
     for r in recs:
-        pdt = parse_date(r[TP_DATE_INDEX])
+        pdt = parse_date(r[DATE_INDEX])
         if pdt[0] == mon:
             mon_recs.append(r)
     return mon_recs

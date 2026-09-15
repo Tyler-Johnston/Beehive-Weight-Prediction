@@ -1,5 +1,26 @@
+# Beehive Weight Prediction
+
+Course project for CS 5600/6600 (Utah State University, Fall 2023). Compares ANN, ConvNet, and LSTM
+architectures (Keras) for predicting beehive weight from temperature time series, and ResNet50 vs. a
+custom YOLO-style ConvNet (PyTorch) for bee/non-bee image classification on the BEE4 dataset. Full
+writeup: [`project_1_report.pdf`](project_1_report.pdf).
+
 # Abstract 
 The purpose of this project was to test various machine learning architectures for different datasets. Such architectures included Artificial Neural Networks (ANNs), and Convolutional Networks (ConvNets), Long Short-Term Memory (LSTM). The first objective was to test these models three models over time series data. The secondary objective was to test ResNet50 and YOLO (two ConvNet models) over image classification data. Performing these tests provided an understanding of the capabilities and limitations of these architectures. Additionally, each objective utilized different programming frameworks (Keras for the time series predictions, and PyTorch for the image classification) to allow exposure to multiple machine learning libraries.
+
+## Repository layout and reproducing the results
+
+- `aux_funs.py` — shared CSV-parsing/windowing helpers used by both time-series scripts.
+- `cs5600_6600_f23_project_1_time_series.py` — the course's toy examples (`f(x)=x+1`, `sin(x)->2sin(x)`) used while developing the architectures.
+- `cs5600_6600_proj_1_f23_temp_weight_predict.py` — the actual ANN/ConvNet/LSTM models described below, trained on the real hive data in `periods_p1_p2_p3_p4_p5/`.
+- `resnet50_image.py`, `yolo_image.py` — the Part 2 image classifiers, trained on `data/BEE4/`.
+- `project_1_report.pdf` — the submitted technical report (source of Figures 1-3 below).
+
+Dependencies were never pinned in this repo: Part 1 needs `numpy`, `matplotlib`, and `keras`/`tensorflow`; Part 2 needs `torch`, `torchvision`, `scikit-learn`, and `Pillow`. No `requirements.txt` exists, so exact versions used at the time are not recoverable.
+
+`data/BEE4/` and `periods_p1_p2_p3_p4_p5/` are gitignored and not part of this repo (they were previously committed by accident). To rerun anything, put the BEE4 image dataset under `data/BEE4/{train,valid}/{bee,nobee}/` and the hive CSVs under `periods_p1_p2_p3_p4_p5/<hiveid>/` yourself.
+
+No trained model files (`*.h5`/`*.pth`) are committed (see `.gitignore`), so `cs5600_6600_proj_1_f23_temp_weight_predict.py` cannot be run as-is — each `predict_temp_weight_*` function unconditionally calls `load_model(saved_model_name)` on a file that doesn't exist yet. To reproduce a model from scratch, uncomment the corresponding `model.fit(...)` / `model.save(...)` lines in that file before the first run; the `load_model(...)` line below them can then load what was just saved for later reruns without retraining.
 
 # Part 1: Time Series Predictions 
 
@@ -7,10 +28,18 @@ The data used to create the time series predictions for the ANN, ConvNet, and LS
 
 ## Model 1: ANN
 Dozens of ANN architectures were tested, trained, and re-trained with varying levels of dense layers and neurons, with most of them having a consistent MSE of around .8-1.6. The “relu” activation always resulted in better results, similarly with the “adam” optimizer. Thus, the best model found contained the input layer shaped to match the number of given steps and features and two hidden dense layers with 4 and 6 neurons respectively (with both the “relu” activation and “adam” optimizer). Of course, the dense output layer was created to match the number of features used. The loss hovered around .75 for each of the 2000 epochs and the MSE was 1.05, which was slightly higher than some previously discovered results. However, the trend of the graph was very consistent albeit being slightly offset. Figure 1 illustrates the best model configuration for predicting weights using ANNs.
+
+![Figure 1: ANN temp->weight predictions, MSE=1.0538, hive 2059, June, P3](figures/fig1_ann_temp_weight.png)
+
 ## Model 2: ConvNet
 Dozens of ConvNet architectures were testing, trained, and re-trained with varying filter numbers, kernel-sizes, pool-sizes, and dense layers. Like model 1, the “relu” activation and “adam” optimizer nearly always resulted in better results. Thus, the best model found began with convolutional layer having a filter size of 4, a kernel-size of 2, and a max pooling layer with a pool-size of 2 with both the “relu” activation and “adam” optimizer. Next, the model was flattened with two dense layers being utilized: the first contained 4 neurons and the second contained 1 neuron. The loss hovered around .75 for each of the 2000 epochs and the MSE was 1.00, which was slighly higher than some previously discovered results. However, the trend of the graph was very consistent albeit being slightly offset. Figure 2 illustrates the best model configuration for predicting weights using ConvNets.
+
+![Figure 2: ConvNet temp->weight predictions, MSE=1.0073, hive 2059, June, P3](figures/fig2_convnet_temp_weight.png)
+
 ## Model 3: LSTM
 Many LSTM architectures were tested, trained, and re-trained with a varying number of neurons on the dense layer. Again, both the “relu” activation and “adam” optimizer produced the best results. The final model architecture was simple: it consisted of the input layer shaped to match the number of given steps and features and one dense layer with 23 units. Of course, the dense output layer was created to match the number of features used. The loss hovered around .68 for each of the 2000 epochs and the MSE was .99. While this may be considered high, it had a consistent, albeit slightly offset, graph.  Figure 3 illustrates the best model configuring for predicting weights using LSTM.
+
+![Figure 3: LSTM temp->weight predictions, MSE=0.9981, hive 2059, June, P3](figures/fig3_lstm_temp_weight.png)
 
 # Part 2: Image Classification
 The image data used to train the ResNet50 and YOLO ConvNet models are from the “BEE4” dataset, which are images obtained by on-hive video traffic monitors. The classifications were to determine if an image contained “bee” or “non-bee” image data.

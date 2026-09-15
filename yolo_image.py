@@ -18,7 +18,6 @@ import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 import torch.optim as optim
 
-### change the number of epochs; I set it to 3.
 CONFIG_DICT = {
     'model': 'yolo_image.pth',
     'plot':  'yolo_plot.png',

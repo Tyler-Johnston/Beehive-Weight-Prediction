@@ -59,10 +59,10 @@ def main():
 
     for param in model.parameters():
         param.requires_grad = False
-        model.fc = nn.Sequential(
-            nn.Linear(2048, 128),
-            nn.ReLU(inplace=True),
-            nn.Linear(128, 2)).to(device)
+    model.fc = nn.Sequential(
+        nn.Linear(2048, 128),
+        nn.ReLU(inplace=True),
+        nn.Linear(128, 2)).to(device)
 
     lossfun = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.fc.parameters())

@@ -4,3 +4,4 @@ data
 periods_p1_p2_p3_p4_p5
 sav
 .DS_Store
+__pycache__/
