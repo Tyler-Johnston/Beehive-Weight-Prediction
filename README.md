@@ -1,9 +1,12 @@
 # Beehive Weight Prediction
 
-Course project for CS 5600/6600 (Utah State University, Fall 2023). Compares ANN, ConvNet, and LSTM
-architectures (Keras) for predicting beehive weight from temperature time series, and ResNet50 vs. a
-custom YOLO-style ConvNet (PyTorch) for bee/non-bee image classification on the BEE4 dataset. Full
-writeup: [`project_1_report.pdf`](project_1_report.pdf).
+Compares ANN, ConvNet, and LSTM architectures (Keras) for predicting beehive weight from temperature
+time series, and ResNet50 vs. a custom YOLO-style ConvNet (PyTorch) for bee/non-bee image
+classification on the BEE4 dataset. Originally built as a graduate machine learning coursework
+project (Fall 2023) — some structural boilerplate (`aux_funs.py`, `time_series_examples.py`) came
+from the assignment's starter code, extended here with the actual model architectures, training,
+and evaluation. Full writeup: [`project_1_report.pdf`](project_1_report.pdf); original assignment
+spec: [`assignment_brief.pdf`](assignment_brief.pdf).
 
 # Abstract 
 The purpose of this project was to test various machine learning architectures for different datasets. Such architectures included Artificial Neural Networks (ANNs), and Convolutional Networks (ConvNets), Long Short-Term Memory (LSTM). The first objective was to test these models three models over time series data. The secondary objective was to test ResNet50 and YOLO (two ConvNet models) over image classification data. Performing these tests provided an understanding of the capabilities and limitations of these architectures. Additionally, each objective utilized different programming frameworks (Keras for the time series predictions, and PyTorch for the image classification) to allow exposure to multiple machine learning libraries.
@@ -11,16 +14,17 @@ The purpose of this project was to test various machine learning architectures f
 ## Repository layout and reproducing the results
 
 - `aux_funs.py` — shared CSV-parsing/windowing helpers used by both time-series scripts.
-- `cs5600_6600_f23_project_1_time_series.py` — the course's toy examples (`f(x)=x+1`, `sin(x)->2sin(x)`) used while developing the architectures.
-- `cs5600_6600_proj_1_f23_temp_weight_predict.py` — the actual ANN/ConvNet/LSTM models described below, trained on the real hive data in `periods_p1_p2_p3_p4_p5/`.
+- `time_series_examples.py` — toy examples (`f(x)=x+1`, `sin(x)->2sin(x)`) used while developing the architectures.
+- `temp_weight_predict.py` — the actual ANN/ConvNet/LSTM models described below, trained on the real hive data in `periods_p1_p2_p3_p4_p5/`.
 - `resnet50_image.py`, `yolo_image.py` — the Part 2 image classifiers, trained on `data/BEE4/`.
 - `project_1_report.pdf` — the submitted technical report (source of Figures 1-3 below).
+- `assignment_brief.pdf` — the original assignment spec.
 
 Dependencies were never pinned in this repo: Part 1 needs `numpy`, `matplotlib`, and `keras`/`tensorflow`; Part 2 needs `torch`, `torchvision`, `scikit-learn`, and `Pillow`. No `requirements.txt` exists, so exact versions used at the time are not recoverable.
 
 `data/BEE4/` and `periods_p1_p2_p3_p4_p5/` are gitignored and not part of this repo (they were previously committed by accident). To rerun anything, put the BEE4 image dataset under `data/BEE4/{train,valid}/{bee,nobee}/` and the hive CSVs under `periods_p1_p2_p3_p4_p5/<hiveid>/` yourself.
 
-No trained model files (`*.h5`/`*.pth`) are committed (see `.gitignore`), so `cs5600_6600_proj_1_f23_temp_weight_predict.py` cannot be run as-is — each `predict_temp_weight_*` function unconditionally calls `load_model(saved_model_name)` on a file that doesn't exist yet. To reproduce a model from scratch, uncomment the corresponding `model.fit(...)` / `model.save(...)` lines in that file before the first run; the `load_model(...)` line below them can then load what was just saved for later reruns without retraining.
+No trained model files (`*.h5`/`*.pth`) are committed (see `.gitignore`), so `temp_weight_predict.py` cannot be run as-is — each `predict_temp_weight_*` function unconditionally calls `load_model(saved_model_name)` on a file that doesn't exist yet. To reproduce a model from scratch, uncomment the corresponding `model.fit(...)` / `model.save(...)` lines in that file before the first run; the `load_model(...)` line below them can then load what was just saved for later reruns without retraining.
 
 # Part 1: Time Series Predictions 
 

@@ -1,7 +1,9 @@
 ###########################################
-# cs5600_6600_f23_project_1_time_series.py
-# some code for project f23
-# bugs to vladimir kulyukin on canvas.
+# time_series_examples.py
+# Toy time-series examples (f(x)=x+1, sin(x)->2*sin(x)) used while
+# developing the ANN/ConvNet/LSTM architectures used in
+# temp_weight_predict.py. Based on starter code provided for a
+# graduate machine learning coursework assignment.
 ###########################################
 
 import numpy as np

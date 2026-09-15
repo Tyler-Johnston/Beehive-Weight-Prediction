@@ -1,6 +1,8 @@
 #######################################
 # module: temp_weight_predict.py
-# bugs to vladimir kulyukin on canvas
+# Predicts beehive weight from temperature using ANN, ConvNet, and
+# LSTM models. Based on starter code provided for a graduate machine
+# learning coursework assignment.
 #######################################
 
 import numpy as np

@@ -1,7 +1,6 @@
 #####################################################
 # yolo_image.py
 # training and validating YOLO on BEE4 image dataset.
-# bugs to vladimir kulyukin, chris allred on canvas
 #####################################################
 
 import matplotlib.pyplot as plt

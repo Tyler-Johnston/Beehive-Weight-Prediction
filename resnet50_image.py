@@ -2,7 +2,6 @@
 # resnet50_image.py
 # training and validating ResNet50 on
 # the BEE4 image dataset.
-# bugs to vladimir kulyukin, chris allred on canvas
 #####################################################
 
 import numpy as np

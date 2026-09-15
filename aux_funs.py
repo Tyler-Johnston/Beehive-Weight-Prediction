@@ -5,9 +5,8 @@ import math
 
 '''
 ################################################
-# Plotting weight/temperature data from USDA-ARS
-# in Tucson, AZ
-# bugs to vladimir kulyukin in canvas.
+# CSV parsing and windowing helpers for the beehive
+# weight/temperature data from USDA-ARS in Tucson, AZ.
 ################################################
 '''
 
